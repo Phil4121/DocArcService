@@ -125,7 +125,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Classes\BlobService.cs" />
+    <Compile Include="Services\BlobService.cs" />
     <Compile Include="Controllers\BlobsController.cs" />
     <Compile Include="Controllers\DocArcController.cs" />
     <Compile Include="Global.asax.cs">

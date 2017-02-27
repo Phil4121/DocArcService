@@ -7,14 +7,14 @@ using System.Net.Http;
 using System.Web;
 using System.Threading.Tasks;
 using DocArcService.Helper;
+using DocArcService.Interfaces;
+using DocArcService.AbstractClasses;
 
 namespace DocArcService.Provider
 {
-    public class BlobStorageUploadProvider : MultipartFileStreamProvider
+    public class BlobStorageUploadProvider : StorageUploadProvider
     {
-        public List<BlobUploadModel> Uploads { get; set; }
-
-        public BlobStorageUploadProvider() : base(Path.GetTempPath())
+        public BlobStorageUploadProvider()
         {
             Uploads = new List<BlobUploadModel>();
         }

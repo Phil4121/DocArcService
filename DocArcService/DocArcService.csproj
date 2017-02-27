@@ -123,8 +123,12 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractClasses\StorageUploadProvider.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Interfaces\IBlobStorageUploadProvider.cs" />
+    <Compile Include="MockedProvider\MockedBlobStorageUploadProvider.cs" />
+    <Compile Include="Provider\ProviderFactory.cs" />
     <Compile Include="Services\BlobService.cs" />
     <Compile Include="Controllers\BlobsController.cs" />
     <Compile Include="Controllers\DocArcController.cs" />

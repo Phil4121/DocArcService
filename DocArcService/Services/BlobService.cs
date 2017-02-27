@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.IO;
 using DocArcService.Provider;
 using DocArcService.Helper;
+using DocArcService.AbstractClasses;
 
 namespace DocArcService.Classes
 {
@@ -16,7 +17,7 @@ namespace DocArcService.Classes
     {
         public async Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent)
         {
-            var blobUploadProvider = new BlobStorageUploadProvider();
+            var blobUploadProvider = ProviderFactory.CreateBlobStorageUploadProvider();
 
             var list = await httpContent.ReadAsMultipartAsync(blobUploadProvider)
                 .ContinueWith(task =>

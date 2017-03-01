@@ -12,14 +12,24 @@ namespace DocArcService.Helper
     {
         public static CloudBlobContainer GetBlobContainer()
         {
-            var blobStorageConnectionString = ConfigurationManager.AppSettings["BlobConnectionString"];
+            var blobStorageConnectionString = GetCloudStorageConnectionString();
 
             // TODO: Implement GetBlobContainer!
-            var blobStorageContainerName = "TEST";
+            var blobStorageContainerName = "test";
 
             var blobStorageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
             var blobClient = blobStorageAccount.CreateCloudBlobClient();
             return blobClient.GetContainerReference(blobStorageContainerName);
+        }
+
+        public static string GetCloudStorageConnectionString()
+        {
+            string connString = ConfigurationManager.AppSettings["StorageConnectionString"];
+
+            if (string.IsNullOrEmpty(connString))
+                throw new Exception("Connectionstring not found!");
+
+            return connString;
         }
     }
 }

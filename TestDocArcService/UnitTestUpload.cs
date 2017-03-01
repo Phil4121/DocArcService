@@ -18,26 +18,76 @@ namespace TestDocArcService
     public class UnitTestUpload
     {
         [TestMethod]
+        public async Task Mocked_TestUpload()
+        {
+            FileStream fileStream = null;
+
+            try
+            {
+                ProviderFactory.IsMocked = true;
+
+                var controller = new BlobsController();
+
+                var message = new HttpRequestMessage();
+                var content = new MultipartFormDataContent();
+
+                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "Test.txt");
+
+                fileStream = new FileStream(filePath, FileMode.Open);
+
+                content.Add(new StreamContent(fileStream), "file", "Test2");
+
+                message.Method = HttpMethod.Post;
+                message.Content = content;
+
+                controller.Request = message;
+
+                var result = await controller.PostBlobUpload();
+
+                Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
+            }
+            finally
+            {
+                fileStream.Close();
+            }
+        }
+
+        [TestMethod]
         public async Task TestUpload()
         {
-            ProviderFactory.IsMocked = true;
+            FileStream fileStream = null;
 
-            var controller = new BlobsController();
+            try
+            {
+                ProviderFactory.IsMocked = false;
 
-            var message = new HttpRequestMessage();
-            var content = new MultipartFormDataContent();
+                var controller = new BlobsController();
 
-            var filestream = new FileStream("C:\\Temp\\Test.txt", FileMode.Open);
-            content.Add(new StreamContent(filestream), "file", "Test2");
+                var message = new HttpRequestMessage();
+                var content = new MultipartFormDataContent();
 
-            message.Method = HttpMethod.Post;
-            message.Content = content;
+                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "Test.txt");
 
-            controller.Request = message;
+                fileStream = new FileStream(filePath, FileMode.Open);
 
-            var result = await controller.PostBlobUpload();
+                var sc = new StreamContent(fileStream);
+                sc.Headers.Add("Content-Type", "image/jpeg");
 
-            Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
+                content.Add(sc, "file", "Testfile");
+
+                message.Method = HttpMethod.Post;
+                message.Content = content;
+
+                controller.Request = message;
+
+                var result = await controller.PostBlobUpload();
+
+                Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
+            }
+            finally
+            {
+                fileStream.Close();
+            }
         }
     }
 

@@ -37,7 +37,6 @@ namespace DocArcService.Classes
 
         public async Task<BlobDownloadModel> DownloadBlob(string blobFileName)
         {
-
             if (!String.IsNullOrEmpty(blobFileName))
             {
                 var container = BlobHelper.GetBlobContainer();

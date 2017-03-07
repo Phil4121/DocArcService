@@ -8,7 +8,7 @@
 *.sln.docstates
 
 # Webconfig
- Web.config
+# Web.config
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -35,9 +35,7 @@ namespace DocArcService.Provider
                     blob.UploadFromStream(fs);
                 }
 
-#if RELEASE
                 File.Delete(fileData.LocalFileName);
-#endif
 
                 var blobUpload = new BlobUploadModel
                 {

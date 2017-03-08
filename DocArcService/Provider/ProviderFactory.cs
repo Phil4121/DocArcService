@@ -13,11 +13,11 @@ namespace DocArcService.Provider
     {
         public static bool IsMocked { get; set; } = false;
 
-        public static StorageUploadProvider CreateBlobStorageUploadProvider()
+        public static StorageUploadProvider CreateBlobStorageUploadProvider(string containerName)
         {
             return IsMocked
-                ? new MockedBlobStorageUploadProvider() as StorageUploadProvider
-                : new BlobStorageUploadProvider();
+                ? new MockedBlobStorageUploadProvider(containerName) as StorageUploadProvider
+                : new BlobStorageUploadProvider(containerName);
         }
 
     }

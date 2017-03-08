@@ -14,7 +14,7 @@ namespace DocArcService.Provider
 {
     public class BlobStorageUploadProvider : StorageUploadProvider
     {
-        public BlobStorageUploadProvider()
+        public BlobStorageUploadProvider(string containerName) : base(containerName)
         {
             Uploads = new List<BlobUploadModel>();
         }
@@ -25,7 +25,7 @@ namespace DocArcService.Provider
             {
                 var fileName = Path.GetFileName(fileData.Headers.ContentDisposition.FileName.Trim('"'));
 
-                var blobContainer = BlobHelper.GetBlobContainer();
+                var blobContainer = BlobHelper.GetBlobContainer(ContainerName).Result;
                 var blob = blobContainer.GetBlockBlobReference(fileName);
 
                 blob.Properties.ContentType = fileData.Headers.ContentType.MediaType;
@@ -35,7 +35,9 @@ namespace DocArcService.Provider
                     blob.UploadFromStream(fs);
                 }
 
+#if RELEASE
                 File.Delete(fileData.LocalFileName);
+#endif
 
                 var blobUpload = new BlobUploadModel
                 {

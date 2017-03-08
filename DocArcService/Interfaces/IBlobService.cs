@@ -10,7 +10,8 @@ namespace DocArcService.Interfaces
 {
     interface IBlobService
     {
-        Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent);
-        Task<BlobDownloadModel> DownloadBlob(string blobFileName);
+        Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container);
+        Task<bool> CreateBlobContaine(string container);
+        Task<BlobDownloadModel> DownloadBlob(string blobFileName, string container);
     }
 }

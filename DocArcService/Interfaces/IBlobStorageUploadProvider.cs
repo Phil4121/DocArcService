@@ -12,6 +12,8 @@ namespace DocArcService.Interfaces
     {
         List<BlobUploadModel> Uploads { get; set; }
 
+        string ContainerName { get; }
+
         Task ExecutePostProcessingAsync();
     }
 }

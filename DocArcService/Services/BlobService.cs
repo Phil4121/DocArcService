@@ -15,9 +15,9 @@ namespace DocArcService.Classes
 {
     public class BlobService : IBlobService
     {
-        public async Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent)
+        public async Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container)
         {
-            var blobUploadProvider = ProviderFactory.CreateBlobStorageUploadProvider();
+            var blobUploadProvider = ProviderFactory.CreateBlobStorageUploadProvider(container);
 
             var list = await httpContent.ReadAsMultipartAsync(blobUploadProvider)
                 .ContinueWith(task =>
@@ -30,17 +30,22 @@ namespace DocArcService.Classes
                     }
                 );
 
-            // TODO: Use data in the list to store blob infos in my database!
-
             return list;
         }
 
-        public async Task<BlobDownloadModel> DownloadBlob(string blobFileName)
+        public async Task<bool> CreateBlobContaine(string container)
+        {
+            var blobContainer = await BlobHelper.GetBlobContainer(container, true);
+
+            return blobContainer != null;
+        } 
+
+        public async Task<BlobDownloadModel> DownloadBlob(string blobFileName, string container)
         {
             if (!String.IsNullOrEmpty(blobFileName))
             {
-                var container = BlobHelper.GetBlobContainer();
-                var blob = container.GetBlockBlobReference(blobFileName);
+                var cont = await BlobHelper.GetBlobContainer(container);
+                var blob = cont.GetBlockBlobReference(blobFileName);
 
                 var ms = new MemoryStream();
                 await blob.DownloadToStreamAsync(ms);

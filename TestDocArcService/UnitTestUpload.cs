@@ -11,6 +11,8 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using System.Collections.Generic;
 using DocArcService.Models;
+using System.Security.Principal;
+using System.Threading;
 
 namespace TestDocArcService
 {
@@ -42,7 +44,7 @@ namespace TestDocArcService
 
                 controller.Request = message;
 
-                var result = await controller.PostBlobUpload();
+                var result = await controller.PostBlobUpload("123-456-789");
 
                 Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
             }
@@ -80,7 +82,7 @@ namespace TestDocArcService
 
                 controller.Request = message;
 
-                var result = await controller.PostBlobUpload();
+                var result = await controller.PostBlobUpload("123-456-789");
 
                 Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
             }

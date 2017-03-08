@@ -13,9 +13,11 @@ namespace DocArcService.AbstractClasses
     {
         public List<BlobUploadModel> Uploads { get; set; }
 
-        public StorageUploadProvider() : base(Path.GetTempPath())
-        {
+        public string ContainerName { get; }
 
+        public StorageUploadProvider(string ContainerName) : base(Path.GetTempPath())
+        {
+            this.ContainerName = ContainerName;
         }
     }
 }

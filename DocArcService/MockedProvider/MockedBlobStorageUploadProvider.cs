@@ -14,7 +14,7 @@ namespace DocArcService.MockedProvider
 {
     public class MockedBlobStorageUploadProvider : StorageUploadProvider
     {
-        public MockedBlobStorageUploadProvider()
+        public MockedBlobStorageUploadProvider(string containerName) : base(containerName) 
         {
             Uploads = new List<BlobUploadModel>();
         }

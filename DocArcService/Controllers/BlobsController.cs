@@ -13,6 +13,7 @@ using System.Web.Http.Description;
 
 namespace DocArcService.Controllers
 {
+    [Authorize]
     public class BlobsController : ApiController
     {
         private readonly IBlobService _service = new BlobService();
@@ -23,7 +24,7 @@ namespace DocArcService.Controllers
         /// <returns></returns>
         /// 
         [ResponseType(typeof(List<BlobUploadModel>))]
-        public async Task<IHttpActionResult> PostBlobUpload()
+        public async Task<IHttpActionResult> PostBlobUpload(string containerName)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace DocArcService.Controllers
                     return StatusCode(HttpStatusCode.UnsupportedMediaType);
                 }
 
-                var result = await _service.UploadBlob(Request.Content);
+                var result = await _service.UploadBlob(Request.Content, containerName);
 
                 if(result != null && result.Count > 0)
                 {
@@ -48,6 +49,31 @@ namespace DocArcService.Controllers
         }
 
         /// <summary>
+        /// Create new BlobContainer
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [ResponseType(typeof(bool))]
+        public async Task<IHttpActionResult> CreateBlobContainer(string containerName)
+        {
+            try
+            {
+                var result = await _service.CreateBlobContaine(containerName);
+
+                if (result)
+                {
+                    return Ok(result);
+                }
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
         /// Downloads a blob file
         /// </summary>
         /// <param name="blobFileName">Filename of the blob</param>
@@ -57,7 +83,12 @@ namespace DocArcService.Controllers
         {
             try
             {
-                var result = await _service.DownloadBlob(blobFileName);
+                if (User.Identity == null || !User.Identity.IsAuthenticated)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                }
+
+                var result = await _service.DownloadBlob(blobFileName, User.Identity.Name);
 
                 if(result == null)
                 {

@@ -33,7 +33,7 @@ namespace DocArcService.Classes
             return list;
         }
 
-        public async Task<bool> CreateBlobContaine(string container)
+        public async Task<bool> CreateBlobContainer(string container)
         {
             var blobContainer = await BlobHelper.GetBlobContainer(container, true);
 

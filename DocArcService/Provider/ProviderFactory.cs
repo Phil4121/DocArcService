@@ -20,5 +20,11 @@ namespace DocArcService.Provider
                 : new BlobStorageUploadProvider(containerName);
         }
 
+        public static IDatabaseProvider CreateDatabaseProvider()
+        {
+            return IsMocked
+                ? new MockedDatabaseProvider() as IDatabaseProvider
+                : new DatabaseProvider();
+        }
     }
 }

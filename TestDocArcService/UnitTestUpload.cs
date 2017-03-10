@@ -44,7 +44,7 @@ namespace TestDocArcService
 
                 controller.Request = message;
 
-                var result = await controller.PostBlobUpload("123-456-789");
+                var result = await controller.PostBlobUpload();
 
                 Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
             }
@@ -82,7 +82,7 @@ namespace TestDocArcService
 
                 controller.Request = message;
 
-                var result = await controller.PostBlobUpload("123-456-789");
+                var result = await controller.PostBlobUpload();
 
                 Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
             }

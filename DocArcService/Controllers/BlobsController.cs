@@ -24,7 +24,7 @@ namespace DocArcService.Controllers
         /// <returns></returns>
         /// 
         [ResponseType(typeof(List<BlobUploadModel>))]
-        public async Task<IHttpActionResult> PostBlobUpload(string containerName)
+        public async Task<IHttpActionResult> PostBlobUpload()
         {
             try
             {
@@ -32,6 +32,13 @@ namespace DocArcService.Controllers
                 {
                     return StatusCode(HttpStatusCode.UnsupportedMediaType);
                 }
+
+                if (User.Identity == null || !User.Identity.IsAuthenticated)
+                {
+                    return StatusCode(HttpStatusCode.Unauthorized);
+                }
+
+                var containerName = "123-456-789";
 
                 var result = await _service.UploadBlob(Request.Content, containerName);
 
@@ -58,7 +65,7 @@ namespace DocArcService.Controllers
         {
             try
             {
-                var result = await _service.CreateBlobContaine(containerName);
+                var result = await _service.CreateBlobContainer(containerName);
 
                 if (result)
                 {

@@ -10,6 +10,9 @@
 # Webconfig
 # Web.config
 
+# Appconfig (from Testproject)
+app.config
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace DocArcService.Interfaces
 {
-    interface IBlobService
+    public interface IBlobService
     {
         Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container);
-        Task<bool> CreateBlobContaine(string container);
+
+        Task<bool> CreateBlobContainer(string container);
+
         Task<BlobDownloadModel> DownloadBlob(string blobFileName, string container);
     }
 }

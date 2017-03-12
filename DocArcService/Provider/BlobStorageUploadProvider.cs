@@ -23,27 +23,34 @@ namespace DocArcService.Provider
         {
             foreach(var fileData in FileData)
             {
-                var fileName = Path.GetFileName(fileData.Headers.ContentDisposition.FileName.Trim('"'));
+                try { 
+                    var fileName = Path.GetFileName(fileData.Headers.ContentDisposition.FileName.Trim('"'));
 
-                var blobContainer = BlobHelper.GetBlobContainer(ContainerName).Result;
-                var blob = blobContainer.GetBlockBlobReference(fileName);
+                    var blobContainer = BlobHelper.GetBlobContainer(ContainerName).Result;
 
-                blob.Properties.ContentType = fileData.Headers.ContentType.MediaType;
+                    var blob = blobContainer.GetBlockBlobReference(fileName);
 
-                using (var fs = File.OpenRead(fileData.LocalFileName))
+                    blob.Properties.ContentType = fileData.Headers.ContentType.MediaType;
+
+                    using (var fs = File.OpenRead(fileData.LocalFileName))
+                    {
+                        blob.UploadFromStream(fs);
+                    }
+
+                    File.Delete(fileData.LocalFileName);
+
+                    var blobUpload = new BlobUploadModel
+                    {
+                        FileName = blob.Name,
+                        FileSizeInBytes = blob.Properties.Length
+                    };
+
+                    Uploads.Add(blobUpload);
+
+                }catch(Exception ex)
                 {
-                    blob.UploadFromStream(fs);
+                    throw new Exception(ex.Message);
                 }
-
-                File.Delete(fileData.LocalFileName);
-
-                var blobUpload = new BlobUploadModel
-                {
-                    FileName = blob.Name,
-                    FileSizeInBytes = blob.Properties.Length
-                };
-
-                Uploads.Add(blobUpload);
             }
 
             return base.ExecutePostProcessingAsync();

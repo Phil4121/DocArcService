@@ -11,6 +11,16 @@ namespace DocArcService.Interfaces
     {
         Users GetUserByProviderUserName(string ProviderUserName);
 
+        Users GetUserById(string UserId);
+
+        void InsertUser(Users User);
+
+        bool DeleteUserById(string UserId);
+
+        bool DeleteUserByProviderName(string ProviderUserName);
+
+        string GetContainerId(string ProviderUserName);
+
         bool DatabaseIsReachable();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DocArcService.AbstractClasses;
 using DocArcService.Interfaces;
 using DocArcService.MockedProvider;
+using DocArcService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace DocArcService.Provider
         {
             return IsMocked
                 ? new MockedDatabaseProvider() as IDatabaseProvider
-                : new DatabaseProvider();
+                : new AzureDatabaseProvider();
         }
     }
 }

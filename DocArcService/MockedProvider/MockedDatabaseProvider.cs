@@ -24,5 +24,36 @@ namespace DocArcService.MockedProvider
         {
             return true;
         }
+
+        public Users GetUserById(string UserId)
+        {
+            Users user = new Users();
+            user.UserId = UserId;
+            user.ProviderUserName = "111010103234";
+            user.Email = "test@test.com";
+            user.Container = "111-000-222-333";
+
+            return user;
+        }
+
+        public void InsertUser(Users User)
+        {
+            // nothing to do;
+        }
+
+        public bool DeleteUserById(string UserId)
+        {
+            return !string.IsNullOrEmpty(UserId);
+        }
+
+        public bool DeleteUserByProviderName(string ProviderUserName)
+        {
+            return !string.IsNullOrEmpty(ProviderUserName);
+        }
+
+        public string GetContainerId(string ProviderUserName)
+        {
+            return Guid.NewGuid().ToString();
+        }
     }
 }

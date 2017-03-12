@@ -188,7 +188,7 @@
     <Compile Include="Models\Users.cs">
       <DependentUpon>DorArcDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Provider\DatabaseProvider.cs" />
+    <Compile Include="Provider\AzureDatabaseProvider.cs" />
     <Compile Include="Provider\ProviderFactory.cs" />
     <Compile Include="Services\BlobService.cs" />
     <Compile Include="Controllers\BlobsController.cs" />

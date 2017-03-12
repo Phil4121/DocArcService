@@ -28,6 +28,9 @@ namespace DocArcService.Helper
                 await container.CreateIfNotExistsAsync();
             }
 
+            if(! await BlobContainerExists(containerName))
+                throw new Exception("Container does not exists");
+
             return blobClient.GetContainerReference(containerName);
         }
 

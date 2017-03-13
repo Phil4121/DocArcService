@@ -65,6 +65,16 @@ namespace TestDocArcService
 
                 var controller = new BlobsController();
 
+                Users testUser = new Users();
+                testUser.UserId = controller.User.Identity.Name;
+                testUser.ProviderUserName = "7701";
+                testUser.Email = "test@user.com";
+                testUser.Container = "123-456-789";
+
+                var dbProvider = ProviderFactory.CreateDatabaseProvider();
+                dbProvider.DeleteUserByProviderName(controller.User.Identity.Name);
+                dbProvider.InsertUser(testUser);
+
                 var message = new HttpRequestMessage();
                 var content = new MultipartFormDataContent();
 

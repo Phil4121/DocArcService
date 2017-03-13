@@ -34,7 +34,6 @@ namespace TestDocArcService
 
             var message = new HttpRequestMessage();
             var content = new ObjectContent<Users>(user, new JsonMediaTypeFormatter());
-            //content.Headers.Add("Content-Type", "application/json");
 
             message.Method = HttpMethod.Post;
             message.Content = content;

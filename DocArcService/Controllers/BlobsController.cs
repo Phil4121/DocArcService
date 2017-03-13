@@ -1,6 +1,8 @@
 ﻿using DocArcService.Classes;
 using DocArcService.Interfaces;
 using DocArcService.Models;
+using DocArcService.Provider;
+using DocArcService.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +40,7 @@ namespace DocArcService.Controllers
                     return StatusCode(HttpStatusCode.Unauthorized);
                 }
 
-                var containerName = "123-456-789";
-
-                var result = await _service.UploadBlob(Request.Content, containerName);
+                var result = await _service.UploadBlob(Request.Content, GetContainerName(User.Identity.Name));
 
                 if(result != null && result.Count > 0)
                 {
@@ -95,7 +95,7 @@ namespace DocArcService.Controllers
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
 
-                var result = await _service.DownloadBlob(blobFileName, User.Identity.Name);
+                var result = await _service.DownloadBlob(blobFileName, GetContainerName(User.Identity.Name));
 
                 if(result == null)
                 {
@@ -126,6 +126,18 @@ namespace DocArcService.Controllers
                     Content = new StringContent(ex.Message)
                 };
             }
+        }
+
+        private string GetContainerName(string providerUserName)
+        {
+            var dbProvider = ProviderFactory.CreateDatabaseProvider();
+            var containerName = dbProvider.GetContainerId(User.Identity.Name);
+
+            if (String.IsNullOrEmpty(containerName))
+                throw new NullReferenceException("No Container found for User " + User.Identity.Name);
+
+            return containerName;
+
         }
     }
 }

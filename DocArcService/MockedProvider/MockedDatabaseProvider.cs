@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DocArcService.Models;
+using System.Threading.Tasks;
 
 namespace DocArcService.MockedProvider
 {
@@ -25,6 +26,8 @@ namespace DocArcService.MockedProvider
             return true;
         }
 
+        #region Users
+
         public Users GetUserById(string UserId)
         {
             Users user = new Users();
@@ -39,21 +42,88 @@ namespace DocArcService.MockedProvider
         public void InsertUser(Users User)
         {
             // nothing to do;
+            return;
         }
 
-        public bool DeleteUserById(string UserId)
+        public async Task<bool> DeleteUserByIdAsync(string UserId)
         {
-            return !string.IsNullOrEmpty(UserId);
+            return await Task.FromResult(!string.IsNullOrEmpty(UserId));
         }
 
-        public bool DeleteUserByProviderName(string ProviderUserName)
+        public async Task<bool> DeleteUserByProviderNameAsync(string ProviderUserName)
         {
-            return !string.IsNullOrEmpty(ProviderUserName);
+            return await Task.FromResult(!string.IsNullOrEmpty(ProviderUserName));
         }
 
         public string GetContainerId(string ProviderUserName)
         {
             return Guid.NewGuid().ToString();
         }
+
+        #endregion
+
+        #region Files
+
+
+        public void InsertFile(Files file, bool SaveChangesAsyncImed = true)
+        {
+            // nothing to do;
+            return;
+        }
+
+        public void InsertFiles(List<Files> files)
+        {
+            // nothing to do
+            return;
+        }
+
+        public async Task<bool> DeleteFileAsync(Files file, bool SaveChangesAsyncImed = true)
+        {
+            return await Task.FromResult(file != null);
+        }
+
+        public async Task<bool> DeleteFilesAsync(List<Files> files)
+        {
+            return await Task.FromResult(files.Count > 0);
+        }
+
+        public async Task<bool> DeleteAllFilesFromUserAsync(string UserId)
+        {
+            return await Task.FromResult(!string.IsNullOrEmpty(UserId));
+        }
+
+        public List<Files> GetFilesByUserId(string UserId)
+        {
+            Files file = new Files();
+            file.Container = Guid.NewGuid().ToString();
+            file.UserId = UserId;
+            file.FileId = Guid.NewGuid().ToString();
+            file.OriginalFileName = "Testfile";
+            file.OriginalFileType = "JPG";
+            file.FileSizeInKB = 10;
+
+            var fileList = new List<Files>();
+            fileList.Add(file);
+
+            return fileList;
+        }
+
+        public List<Files> GetFilesByContainerId(string ContainerId)
+        {
+            Files file = new Files();
+            file.Container = ContainerId;
+            file.UserId = Guid.NewGuid().ToString();
+            file.FileId = Guid.NewGuid().ToString();
+            file.OriginalFileName = "Testfile2";
+            file.OriginalFileType = "JPG";
+            file.FileSizeInKB = 100;
+
+            var fileList = new List<Files>();
+            fileList.Add(file);
+
+            return fileList;
+        }
+
+        #endregion
     }
 }

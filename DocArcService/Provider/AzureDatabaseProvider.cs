@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using DocArcService.Models;
 using DocArcService.AbstractClasses;
+using System.Threading.Tasks;
 
 namespace DocArcService.Provider
 {
@@ -14,17 +15,19 @@ namespace DocArcService.Provider
         {
         }
 
-        public override bool DeleteUserById(string UserId)
+        #region Users
+
+        public override async Task<bool> DeleteUserByIdAsync(string UserId)
         {
-            return DeleteUser(GetUserById(UserId));
+            return await DeleteUser(GetUserById(UserId));
         }
 
-        public override bool DeleteUserByProviderName(string ProviderUserName)
+        public override async Task<bool> DeleteUserByProviderNameAsync(string ProviderUserName)
         {
-            return DeleteUser(GetUserByProviderUserName(ProviderUserName));
+            return await DeleteUser(GetUserByProviderUserName(ProviderUserName));
         }
 
-        private bool DeleteUser(Users user)
+        private async Task<bool> DeleteUser(Users user)
         {
             try
             {
@@ -32,7 +35,7 @@ namespace DocArcService.Provider
                     return false;
 
                 Ent.Users.Remove(user);
-                Ent.SaveChanges();
+                await Ent.SaveChangesAsync();
                 return true;
 
             }
@@ -71,12 +74,102 @@ namespace DocArcService.Provider
             try
             {
                 Ent.Users.Add(User);
-                Ent.SaveChanges();
+                Ent.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                throw;
             }
         }
+
+        #endregion
+
+        #region Files
+
+        public override void InsertFile(Files file, bool SaveChangesAsyncImed = true)
+        {
+            try
+            {
+                Ent.Files.Add(file);
+
+                if(SaveChangesAsyncImed)
+                    Ent.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public override void InsertFiles(List<Files> files)
+        {
+            try
+            {
+                foreach(Files file in files)
+                {
+                    InsertFile(file, false);
+                }
+
+                Ent.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public override async Task<bool> DeleteFileAsync(Files file, bool SaveChangesAsyncImed = true)
+        {
+            try
+            {
+                Ent.Files.Remove(file);
+
+                if (SaveChangesAsyncImed)
+                    await Ent.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public override async Task<bool> DeleteFilesAsync(List<Files> files)
+        {
+            try
+            {
+                foreach (Files file in files)
+                {
+                    await DeleteFileAsync(file, false);
+                }
+
+                await Ent.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public override async Task<bool> DeleteAllFilesFromUserAsync(string UserId)
+        {
+            var files = GetFilesByUserId(UserId);
+            return await DeleteFilesAsync(files);
+        }
+
+        public override List<Files> GetFilesByUserId(string UserId)
+        {
+            return Ent.Files.Where(x => x.UserId == UserId).ToList();
+        }
+
+        public override List<Files> GetFilesByContainerId(string ContainerId)
+        {
+            return Ent.Files.Where(x => x.Container == ContainerId).ToList();
+        }
+
+        #endregion
     }
 }

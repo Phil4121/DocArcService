@@ -28,7 +28,7 @@ namespace DocArcService.Controllers
                     return StatusCode(HttpStatusCode.Unauthorized);
                 }
 
-                var result = await _service.CreateUser(Request.Content);
+                var result = await _service.CreateUserAsync(Request.Content);
 
                 if (result)
                 {
@@ -54,7 +54,7 @@ namespace DocArcService.Controllers
                     return StatusCode(HttpStatusCode.Unauthorized);
                 }
 
-                var result = _service.DeleteUserById(UserId);
+                var result = _service.DeleteUserByIdAsync(UserId).Result;
 
                 if (result)
                 {
@@ -79,7 +79,7 @@ namespace DocArcService.Controllers
                     return StatusCode(HttpStatusCode.Unauthorized);
                 }
 
-                var result = _service.DeleteUserByProviderName(providerName);
+                var result = _service.DeleteUserByProviderNameAsync(providerName).Result;
 
                 if (result)
                 {

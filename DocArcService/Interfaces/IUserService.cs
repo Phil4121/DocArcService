@@ -9,10 +9,10 @@ namespace DocArcService.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> CreateUser(HttpContent httpContent);
+        Task<bool> CreateUserAsync(HttpContent httpContent);
 
-        bool DeleteUserById(string id);
+        Task<bool> DeleteUserByIdAsync(string id);
 
-        bool DeleteUserByProviderName(string providerName);
+        Task<bool> DeleteUserByProviderNameAsync(string providerName);
     }
 }

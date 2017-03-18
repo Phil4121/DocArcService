@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="f0bb3e5a108e4593b5a1770845a7cc13" Name="Diagram1">
         <EntityTypeShape EntityType="docarcdbModel.Users" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="docarcdbModel.Files" Width="1.5" PointX="3.375" PointY="0.75" />
+        <AssociationConnector Association="docarcdbModel.FK_Files_ToUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

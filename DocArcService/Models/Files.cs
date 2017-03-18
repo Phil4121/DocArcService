@@ -12,20 +12,15 @@ namespace DocArcService.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Users
+    public partial class Files
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Users()
-        {
-            this.Files = new HashSet<Files>();
-        }
-    
-        public string UserId { get; set; }
-        public string ProviderUserName { get; set; }
+        public string FileId { get; set; }
         public string Container { get; set; }
-        public string Email { get; set; }
+        public string UserId { get; set; }
+        public string OriginalFileName { get; set; }
+        public string OriginalFileType { get; set; }
+        public int FileSizeInKB { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Files> Files { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

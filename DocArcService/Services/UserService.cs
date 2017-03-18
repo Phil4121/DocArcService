@@ -12,7 +12,7 @@ namespace DocArcService.Services
 {
     public class UserService : IUserService
     {
-        public async Task<bool> CreateUser(HttpContent httpContent)
+        public async Task<bool> CreateUserAsync(HttpContent httpContent)
         {
             var userProvider = ProviderFactory.CreateDatabaseProvider();
 
@@ -30,18 +30,18 @@ namespace DocArcService.Services
             return success;
         }
 
-        public bool DeleteUserById(string id)
+        public async Task<bool> DeleteUserByIdAsync(string id)
         {
             var userProvider = ProviderFactory.CreateDatabaseProvider();
 
-            return userProvider.DeleteUserById(id);
+            return await userProvider.DeleteUserByIdAsync(id);
         }
 
-        public bool DeleteUserByProviderName(string providerName)
+        public async Task<bool> DeleteUserByProviderNameAsync(string providerName)
         {
             var userProvider = ProviderFactory.CreateDatabaseProvider();
 
-            return userProvider.DeleteUserByProviderName(providerName);
+            return await userProvider.DeleteUserByProviderNameAsync(providerName);
         }
     }
 }

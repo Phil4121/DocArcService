@@ -223,6 +223,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DorArcDbModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Files.cs">
+      <DependentUpon>DorArcDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Users.cs">
       <DependentUpon>DorArcDbModel.tt</DependentUpon>
     </Compile>

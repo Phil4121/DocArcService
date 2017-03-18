@@ -72,7 +72,7 @@ namespace TestDocArcService
                 testUser.Container = "123-456-789";
 
                 var dbProvider = ProviderFactory.CreateDatabaseProvider();
-                dbProvider.DeleteUserByProviderName(controller.User.Identity.Name);
+                dbProvider.DeleteUserByProviderNameAsync(controller.User.Identity.Name);
                 dbProvider.InsertUser(testUser);
 
                 var message = new HttpRequestMessage();

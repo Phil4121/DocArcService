@@ -9,18 +9,40 @@ namespace DocArcService.Interfaces
 {
     public interface IDatabaseProvider
     {
+        bool DatabaseIsReachable();
+
+        #region Users
+
         Users GetUserByProviderUserName(string ProviderUserName);
 
         Users GetUserById(string UserId);
 
         void InsertUser(Users User);
 
-        bool DeleteUserById(string UserId);
+        Task<bool> DeleteUserByIdAsync(string UserId);
 
-        bool DeleteUserByProviderName(string ProviderUserName);
+        Task<bool> DeleteUserByProviderNameAsync(string ProviderUserName);
 
         string GetContainerId(string ProviderUserName);
 
-        bool DatabaseIsReachable();
+        #endregion
+
+        #region Files
+
+        void InsertFile(Files file, bool SaveChangesAsyncImed = true);
+
+        void InsertFiles(List<Files> files);
+
+        Task<bool> DeleteFileAsync(Files file, bool SaveChangesAsyncImed = true);
+
+        Task<bool> DeleteFilesAsync(List<Files> files);
+
+        Task<bool> DeleteAllFilesFromUserAsync(string UserId);
+
+        List<Files> GetFilesByUserId(string UserId);
+
+        List<Files> GetFilesByContainerId(string ContainerId);
+
+        #endregion
     }
 }

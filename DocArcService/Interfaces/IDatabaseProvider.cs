@@ -17,7 +17,7 @@ namespace DocArcService.Interfaces
 
         Users GetUserById(string UserId);
 
-        void InsertUser(Users User);
+        bool InsertUser(Users User);
 
         Task<bool> DeleteUserByIdAsync(string UserId);
 
@@ -29,9 +29,9 @@ namespace DocArcService.Interfaces
 
         #region Files
 
-        void InsertFile(Files file, bool SaveChangesAsyncImed = true);
+        bool InsertFile(Files file, bool SaveChangesAsyncImed = true);
 
-        void InsertFiles(List<Files> files);
+        Task<bool> InsertFiles(List<Files> files);
 
         Task<bool> DeleteFileAsync(Files file, bool SaveChangesAsyncImed = true);
 

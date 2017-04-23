@@ -66,13 +66,14 @@ namespace TestDocArcService
                 var controller = new BlobsController();
 
                 Users testUser = new Users();
-                testUser.UserId = controller.User.Identity.Name;
-                testUser.ProviderUserName = "7701";
-                testUser.Email = "test@user.com";
-                testUser.Container = "123-456-789";
+                testUser.UserId = Guid.NewGuid().ToString();
+                testUser.ProviderUserName = controller.User.Identity.Name;
+                testUser.Email = "TestUpload@user.com";
+                testUser.Container = Guid.NewGuid().ToString();
 
                 var dbProvider = ProviderFactory.CreateDatabaseProvider();
-                dbProvider.DeleteUserByProviderNameAsync(controller.User.Identity.Name);
+                await dbProvider.DeleteUserByProviderNameAsync(testUser.ProviderUserName);
+
                 dbProvider.InsertUser(testUser);
 
                 var message = new HttpRequestMessage();
@@ -92,9 +93,11 @@ namespace TestDocArcService
 
                 controller.Request = message;
 
+                await controller.CreateBlobContainer(testUser.Container);
+
                 var result = await controller.PostBlobUpload();
 
-                Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
+                Assert.IsTrue(result is OkNegotiatedContentResult<List<BlobUploadModel>>);
             }
             finally
             {

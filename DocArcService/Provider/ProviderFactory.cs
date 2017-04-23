@@ -14,11 +14,11 @@ namespace DocArcService.Provider
     {
         public static bool IsMocked { get; set; } = false;
 
-        public static StorageUploadProvider CreateBlobStorageUploadProvider(string containerName)
+        public static StorageUploadProvider CreateBlobStorageUploadProvider(string containerName, string providerUserName)
         {
             return IsMocked
-                ? new MockedBlobStorageUploadProvider(containerName) as StorageUploadProvider
-                : new BlobStorageUploadProvider(containerName);
+                ? new MockedBlobStorageUploadProvider(containerName, providerUserName) as StorageUploadProvider
+                : new BlobStorageUploadProvider(containerName, providerUserName);
         }
 
         public static IDatabaseProvider CreateDatabaseProvider()
@@ -26,6 +26,13 @@ namespace DocArcService.Provider
             return IsMocked
                 ? new MockedDatabaseProvider() as IDatabaseProvider
                 : new AzureDatabaseProvider();
+        }
+
+        public static INoSqlDatabase CreateDocumentDBProvider()
+        {
+            return IsMocked
+                ? new MockedDocumentDBProvider() as INoSqlDatabase
+                : new DocumentDBProvider();
         }
     }
 }

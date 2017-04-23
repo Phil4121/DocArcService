@@ -15,9 +15,12 @@ namespace DocArcService.AbstractClasses
 
         public string ContainerName { get; }
 
-        public StorageUploadProvider(string ContainerName) : base(Path.GetTempPath())
+        public string ProviderUserName { get; }
+
+        public StorageUploadProvider(string ContainerName, string ProviderUserName) : base(Path.GetTempPath())
         {
             this.ContainerName = ContainerName;
+            this.ProviderUserName = ProviderUserName;
         }
     }
 }

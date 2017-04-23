@@ -10,7 +10,7 @@ namespace DocArcService.Interfaces
 {
     public interface IBlobService
     {
-        Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container);
+        Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container, string userProviderName);
 
         Task<bool> CreateBlobContainer(string container);
 

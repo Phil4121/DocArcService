@@ -39,9 +39,9 @@ namespace DocArcService.Provider
                 return true;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                return false;
             }
         }
 
@@ -69,16 +69,18 @@ namespace DocArcService.Provider
             return Ent.Users.Where(x => x.UserId == UserId).FirstOrDefault();
         }
 
-        public override void InsertUser(Users User)
+        public override bool InsertUser(Users User)
         {
             try
             {
                 Ent.Users.Add(User);
-                Ent.SaveChangesAsync();
+                Ent.SaveChanges();
+
+                return true;
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
@@ -86,22 +88,24 @@ namespace DocArcService.Provider
 
         #region Files
 
-        public override void InsertFile(Files file, bool SaveChangesAsyncImed = true)
+        public override bool InsertFile(Files file, bool SaveChangesImed = true)
         {
             try
             {
                 Ent.Files.Add(file);
 
-                if(SaveChangesAsyncImed)
-                    Ent.SaveChangesAsync();
+                if(SaveChangesImed)
+                    Ent.SaveChanges();
+
+                return true;
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
-        public override void InsertFiles(List<Files> files)
+        public override async Task<bool> InsertFiles(List<Files> files)
         {
             try
             {
@@ -110,11 +114,13 @@ namespace DocArcService.Provider
                     InsertFile(file, false);
                 }
 
-                Ent.SaveChangesAsync();
+                await Ent.SaveChangesAsync();
+
+                return true;
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
@@ -131,7 +137,7 @@ namespace DocArcService.Provider
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
@@ -150,7 +156,7 @@ namespace DocArcService.Provider
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
@@ -167,7 +173,7 @@ namespace DocArcService.Provider
 
         public override List<Files> GetFilesByContainerId(string ContainerId)
         {
-            return Ent.Files.Where(x => x.Container == ContainerId).ToList();
+            return Ent.Files.Where(x => x.Container == ContainerId).ToList<Files>();
         }
 
         #endregion

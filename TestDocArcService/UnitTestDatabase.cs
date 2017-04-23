@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DocArcService.Provider;
 using DocArcService.Models;
+using System.Threading.Tasks;
 
 namespace TestDocArcService
 {
@@ -28,7 +29,7 @@ namespace TestDocArcService
         }
 
         [TestMethod]
-        public void Mocked_TestDbReadWrite()
+        public async Task Mocked_TestUserReadWrite()
         {
             ProviderFactory.IsMocked = true;
 
@@ -40,9 +41,9 @@ namespace TestDocArcService
             testUser.Email = "test@user.com";
             testUser.Container = "123-456-789";
 
-            dbProvider.DeleteUserByIdAsync(testUser.UserId);
+            await dbProvider.DeleteUserByIdAsync(testUser.UserId);
 
-            dbProvider.InsertUser(testUser);
+            Assert.IsTrue(dbProvider.InsertUser(testUser));
 
             Assert.IsTrue(dbProvider.GetUserById(testUser.UserId) != null);
 
@@ -52,7 +53,7 @@ namespace TestDocArcService
         }
 
         [TestMethod]
-        public void TestDbReadWrite()
+        public async Task TestUserReadWrite()
         {
             ProviderFactory.IsMocked = false;
 
@@ -61,12 +62,13 @@ namespace TestDocArcService
             Users testUser = new Users();
             testUser.UserId = "123456789";
             testUser.ProviderUserName = "7701";
-            testUser.Email = "test@user.com";
-            testUser.Container = "123-456-789";
+            testUser.Email = "testUserReadWrite@user.com";
+            testUser.Container = Guid.NewGuid().ToString();
 
-            dbProvider.DeleteUserByIdAsync(testUser.UserId);
+            await dbProvider.DeleteAllFilesFromUserAsync(testUser.UserId);
+            await dbProvider.DeleteUserByProviderNameAsync(testUser.ProviderUserName);
 
-            dbProvider.InsertUser(testUser);
+            Assert.IsTrue(dbProvider.InsertUser(testUser));
 
             Assert.IsTrue(dbProvider.GetUserById(testUser.UserId) != null);
 
@@ -74,7 +76,68 @@ namespace TestDocArcService
 
             Assert.IsTrue(dbProvider.GetContainerId(testUser.ProviderUserName) == testUser.Container);
 
-            Assert.IsTrue(dbProvider.DeleteUserByIdAsync(testUser.UserId).Result);
+            Assert.IsTrue(await dbProvider.DeleteUserByIdAsync(testUser.UserId));
+        }
+
+        [TestMethod]
+        public void Mocked_TestFileReadWrite()
+        {
+            ProviderFactory.IsMocked = true;
+
+            var dbProvider = ProviderFactory.CreateDatabaseProvider();
+
+            Files testFile = new Files();
+            testFile.UserId = "123456789";
+            testFile.FileId = "987654321";
+            testFile.Container = Guid.NewGuid().ToString();
+            testFile.OriginalFileName = "Testdatei";
+            testFile.OriginalFileType = "JPG";
+            testFile.FileSizeInKB = 100;
+
+            dbProvider.DeleteFileAsync(testFile);
+
+            Assert.IsTrue(dbProvider.InsertFile(testFile));
+
+            Assert.IsTrue(dbProvider.GetFilesByUserId(testFile.UserId) != null);
+
+            Assert.IsTrue(dbProvider.GetFilesByContainerId(testFile.Container) != null);
+
+            Assert.IsTrue(dbProvider.DeleteUserByIdAsync(testFile.FileId).Result);
+        }
+
+        [TestMethod]
+        public async Task TestFileReadWrite()
+        {
+            ProviderFactory.IsMocked = false;
+
+            var dbProvider = ProviderFactory.CreateDatabaseProvider();
+
+            Users testUser = new Users();
+            testUser.UserId = "111222333";
+            testUser.ProviderUserName = "9999";
+            testUser.Email = "9999@user.com";
+            testUser.Container = Guid.NewGuid().ToString();
+
+            await dbProvider.DeleteFilesAsync(dbProvider.GetFilesByUserId(testUser.UserId));
+            await dbProvider.DeleteUserByProviderNameAsync(testUser.ProviderUserName);
+
+            Assert.IsTrue(dbProvider.InsertUser(testUser));
+
+            Files testFile = new Files();
+            testFile.UserId = testUser.UserId;
+            testFile.FileId = "987654321";
+            testFile.Container = testUser.Container;
+            testFile.OriginalFileName = "Testdatei";
+            testFile.OriginalFileType = "JPG";
+            testFile.FileSizeInKB = 100;
+
+            await dbProvider.DeleteFileAsync(testFile);
+
+            Assert.IsTrue(dbProvider.InsertFile(testFile));
+
+            Assert.IsTrue(dbProvider.GetFilesByUserId(testFile.UserId) != null);
+
+            Assert.IsTrue(dbProvider.GetFilesByContainerId(testFile.Container) != null);
         }
     }
 }

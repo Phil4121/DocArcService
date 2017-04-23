@@ -15,9 +15,9 @@ namespace DocArcService.Classes
 {
     public class BlobService : IBlobService
     {
-        public async Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container)
+        public async Task<List<BlobUploadModel>> UploadBlob(HttpContent httpContent, string container, string providerUserName)
         {
-            var blobUploadProvider = ProviderFactory.CreateBlobStorageUploadProvider(container);
+            var blobUploadProvider = ProviderFactory.CreateBlobStorageUploadProvider(container, providerUserName);
 
             var list = await httpContent.ReadAsMultipartAsync(blobUploadProvider)
                 .ContinueWith(task =>

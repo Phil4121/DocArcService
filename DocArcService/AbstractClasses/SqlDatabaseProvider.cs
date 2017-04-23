@@ -62,7 +62,7 @@ namespace DocArcService.AbstractClasses
 
         public abstract Users GetUserById(string UserId);
 
-        public abstract void InsertUser(Users User);
+        public abstract bool InsertUser(Users User);
 
         public abstract Task<bool> DeleteUserByIdAsync(string UserId);
 
@@ -74,9 +74,9 @@ namespace DocArcService.AbstractClasses
 
         #region Files
 
-        public abstract void InsertFile(Files file, bool SaveChangesAsyncImed = true);
+        public abstract bool InsertFile(Files file, bool SaveChangesAsyncImed = true);
 
-        public abstract void InsertFiles(List<Files> files);
+        public abstract Task<bool> InsertFiles(List<Files> files);
 
         public abstract Task<bool> DeleteFileAsync(Files file, bool SaveChangesAsyncImed = true);
 

@@ -40,7 +40,7 @@ namespace DocArcService.Controllers
                     return StatusCode(HttpStatusCode.Unauthorized);
                 }
 
-                var result = await _service.UploadBlob(Request.Content, GetContainerName(User.Identity.Name));
+                var result = await _service.UploadBlob(Request.Content, GetContainerName(User.Identity.Name), User.Identity.Name);
 
                 if(result != null && result.Count > 0)
                 {

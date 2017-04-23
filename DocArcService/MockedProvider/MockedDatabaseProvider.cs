@@ -39,10 +39,9 @@ namespace DocArcService.MockedProvider
             return user;
         }
 
-        public void InsertUser(Users User)
+        public bool InsertUser(Users User)
         {
-            // nothing to do;
-            return;
+            return User != null;
         }
 
         public async Task<bool> DeleteUserByIdAsync(string UserId)
@@ -65,16 +64,14 @@ namespace DocArcService.MockedProvider
         #region Files
 
 
-        public void InsertFile(Files file, bool SaveChangesAsyncImed = true)
+        public bool InsertFile(Files file, bool SaveChangesAsyncImed = true)
         {
-            // nothing to do;
-            return;
+            return file != null;
         }
 
-        public void InsertFiles(List<Files> files)
+        public async Task<bool> InsertFiles(List<Files> files)
         {
-            // nothing to do
-            return;
+            return await Task.FromResult(files.Count > 0);
         }
 
         public async Task<bool> DeleteFileAsync(Files file, bool SaveChangesAsyncImed = true)

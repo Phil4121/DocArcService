@@ -18,14 +18,23 @@ namespace DocArcService.Helper
         public string ImageFilePath { get; set; }
  
         public string SubscriptionKey { get; set; }
- 
+
+        public ImageHelper.Format ImageFormat { get; set; } = ImageHelper.Format.No_Change;
+
         const string UNKNOWN_LANGUAGE = "unk";
         
         public async Task<OcrResults> ConvertImageToStreamAndExtractText()
         {
             var visionServiceClient = new VisionServiceClient(SubscriptionKey);
- 
-            using (Stream imageFileStream = File.OpenRead(ImageFilePath))
+
+            var newImageFilePath = "";
+  
+            using (var imgHelper = new ImageHelper())
+            {
+                newImageFilePath = imgHelper.Resize(ImageFilePath, ImageFormat);
+            }
+
+            using (Stream imageFileStream = File.OpenRead(newImageFilePath))
             {
                 return await visionServiceClient.RecognizeTextAsync(imageFileStream, UNKNOWN_LANGUAGE);
             }

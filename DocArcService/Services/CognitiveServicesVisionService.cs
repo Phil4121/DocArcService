@@ -30,7 +30,8 @@ namespace DocArcService.Services
             var cognitiveService = new ImageToTextInterpreter
             {
                 ImageFilePath = ImageFilePath,
-                SubscriptionKey = this.SubstcriptionKey
+                SubscriptionKey = this.SubstcriptionKey,
+                ImageFormat = ImageHelper.Format.A4
             };
 
             return await cognitiveService.ConvertImageToStreamAndExtractText();

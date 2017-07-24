@@ -1,61 +1,53 @@
-﻿using System;
+﻿using DocArcService.Controllers;
+using DocArcService.Interfaces;
+using DocArcService.Models;
+using DocArcService.Provider;
+using DocArcService.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DocArcService.Controllers;
-using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.IO;
-using System.Net.Http.Headers;
-using DocArcService.Provider;
-using System.Web.Http;
+using System.Threading.Tasks;
 using System.Web.Http.Results;
-using System.Collections.Generic;
-using DocArcService.Models;
-using System.Security.Principal;
-using System.Threading;
 
 namespace TestDocArcService
 {
     [TestClass]
-    public class UnitTestUpload
+    public class UnitTestFileProcessing
     {
         [TestMethod]
-        public async Task Mocked_TestUpload()
+        public async Task TestFileProcessing()
         {
-            FileStream fileStream = null;
-
             try
             {
-                ProviderFactory.IsMocked = true;
+                IFileProcessingProvider provider = new CognitiveServiceProvider();
 
-                var controller = new BlobsController();
+                OkNegotiatedContentResult<List<BlobUploadModel>> result = await TestFileUpload();
 
-                var message = new HttpRequestMessage();
-                var content = new MultipartFormDataContent();
+                Assert.IsNotNull(result);
 
-                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "Test.txt");
+                var blob = result.Content.FirstOrDefault();
 
-                fileStream = new FileStream(filePath, FileMode.Open);
+                Assert.IsNotNull(blob);
 
-                content.Add(new StreamContent(fileStream), "file", "Test2");
+                if (blob == null)
+                    return;
 
-                message.Method = HttpMethod.Post;
-                message.Content = content;
+                var ok = await provider.ProzessImage(blob.FileName, blob.Container);
 
-                controller.Request = message;
-
-                var result = await controller.PostBlobUpload();
-
-                Assert.IsInstanceOfType(result.GetType(), typeof(OkResult).GetType());
+                Assert.IsTrue(ok);
+                    
             }
-            finally
+            catch (Exception ex)
             {
-                fileStream.Close();
+                Console.WriteLine(ex.Message);
             }
         }
 
-        [TestMethod]
-        public async Task TestUpload()
+        private async Task<OkNegotiatedContentResult<List<BlobUploadModel>>> TestFileUpload()
         {
             FileStream fileStream = null;
 
@@ -72,7 +64,8 @@ namespace TestDocArcService
                 try
                 {
                     await dbProvider.DeleteUserByProviderNameAsync(testUser.ProviderUserName);
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     //maybe problem with db server firewall! Add you IP Address
                     Console.WriteLine(ex.Message);
@@ -82,14 +75,14 @@ namespace TestDocArcService
                 var message = new HttpRequestMessage();
                 var content = new MultipartFormDataContent();
 
-                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "Test.txt");
+                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "ocr.jpg");
 
                 fileStream = new FileStream(filePath, FileMode.Open);
 
                 var sc = new StreamContent(fileStream);
                 sc.Headers.Add("Content-Type", "image/jpeg");
 
-                content.Add(sc, "file", "Testfile");
+                content.Add(sc, "file", "Testfile" + Guid.NewGuid().ToString());
 
                 message.Method = HttpMethod.Post;
                 message.Content = content;
@@ -101,11 +94,16 @@ namespace TestDocArcService
                 var result = await controller.PostBlobUpload();
 
                 Assert.IsTrue(result is OkNegotiatedContentResult<List<BlobUploadModel>>);
-            }catch(Exception ex)
+
+                return (OkNegotiatedContentResult<List<BlobUploadModel>>)result;
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("************************************");
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("************************************");
+
+                return null;
             }
             finally
             {
@@ -113,6 +111,4 @@ namespace TestDocArcService
             }
         }
     }
-
-
 }

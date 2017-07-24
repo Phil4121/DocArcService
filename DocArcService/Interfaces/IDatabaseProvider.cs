@@ -13,11 +13,11 @@ namespace DocArcService.Interfaces
 
         #region Users
 
-        Users GetUserByProviderUserName(string ProviderUserName);
+        UserModel GetUserByProviderUserName(string ProviderUserName);
 
-        Users GetUserById(string UserId);
+        UserModel GetUserById(string UserId);
 
-        bool InsertUser(Users User);
+        UserModel AddUser(UserModel User);
 
         Task<bool> DeleteUserByIdAsync(string UserId);
 

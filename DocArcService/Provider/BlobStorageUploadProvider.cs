@@ -39,6 +39,7 @@ namespace DocArcService.Provider
 
                     var blobUpload = new BlobUploadModel
                     {
+                        Container = ContainerName,
                         FileName = blob.Name,
                         FileSizeInBytes = blob.Properties.Length,
                         FileSizeInKb = blob.Properties.Length / 1000,

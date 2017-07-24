@@ -50,19 +50,20 @@ namespace DocArcService.AbstractClasses
                 Ent.Database.Connection.Open();
                 return Ent.Database.Exists();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
 
         #region Users
 
-        public abstract Users GetUserByProviderUserName(string ProviderUserName);
+        public abstract UserModel GetUserByProviderUserName(string ProviderUserName);
 
-        public abstract Users GetUserById(string UserId);
+        public abstract UserModel GetUserById(string UserId);
 
-        public abstract bool InsertUser(Users User);
+        public abstract UserModel AddUser(UserModel User);
 
         public abstract Task<bool> DeleteUserByIdAsync(string UserId);
 

@@ -7,6 +7,8 @@ namespace DocArcService.Models
 {
     public class BlobUploadModel
     {
+        public string Container { get; set; }
+
         public string FileName { get; set; }
 
         public string FileContentType { get; set; }

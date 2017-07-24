@@ -10,6 +10,8 @@ using System.IO;
 using DocArcService.Provider;
 using DocArcService.Helper;
 using DocArcService.AbstractClasses;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DocArcService.Classes
 {
@@ -33,12 +35,35 @@ namespace DocArcService.Classes
             return list;
         }
 
+        public async Task<bool> UploadBlob(string fileName, string fileLocation, string container)
+        {
+            try
+            {
+                CloudBlobContainer cont = await BlobHelper.GetBlobContainer(container);
+
+                // Retrieve reference to a blob
+                CloudBlockBlob blockBlob = cont.GetBlockBlobReference(fileName);
+
+                // Create or overwrite the "myblob" blob with contents from a local file.
+                using (var fileStream = File.OpenRead(fileLocation))
+                {
+                    blockBlob.UploadFromStream(fileStream);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
         public async Task<bool> CreateBlobContainer(string container)
         {
             var blobContainer = await BlobHelper.GetBlobContainer(container, true);
 
             return blobContainer != null;
-        } 
+        }
 
         public async Task<BlobDownloadModel> DownloadBlob(string blobFileName, string container)
         {
@@ -62,6 +87,28 @@ namespace DocArcService.Classes
             }
 
             return null;
+        }
+
+        public async Task<bool> BlobExists(string blobFileName, string container)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(blobFileName))
+                {
+                    var cont = await BlobHelper.GetBlobContainer(container);
+                    var blob = cont.GetBlockBlobReference(blobFileName);
+
+                    return blob.Exists();
+                }
+
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
     }
 }

@@ -10,13 +10,11 @@ namespace DocArcService.MockedProvider
 {
     public class MockedDatabaseProvider : IDatabaseProvider
     {
-        public Users GetUserByProviderUserName(string ProviderUserName)
+        public UserModel GetUserByProviderUserName(string ProviderUserName)
         {
-            Users user = new Users();
-            user.UserId = Guid.NewGuid().ToString();
+            UserModel user = new UserModel();
             user.ProviderUserName = "111010103234";
             user.Email = "test@test.com";
-            user.Container = "111-000-222-333";
 
             return user;
         }
@@ -28,20 +26,28 @@ namespace DocArcService.MockedProvider
 
         #region Users
 
-        public Users GetUserById(string UserId)
+        public UserModel GetUserById(string UserId)
         {
-            Users user = new Users();
-            user.UserId = UserId;
+            UserModel user = new UserModel();
             user.ProviderUserName = "111010103234";
             user.Email = "test@test.com";
-            user.Container = "111-000-222-333";
 
             return user;
         }
 
-        public bool InsertUser(Users User)
+        public UserModel AddUser(UserModel User)
         {
-            return User != null;
+            Users mockedDBUser = new Users();
+            mockedDBUser.UserId = Guid.NewGuid().ToString();
+            mockedDBUser.Container = Guid.NewGuid().ToString();
+            mockedDBUser.Email = User.Email;
+            mockedDBUser.ProviderUserName = User.ProviderUserName;
+
+            UserModel mockedUser = new UserModel(mockedDBUser.UserId, mockedDBUser.Container);
+            mockedUser.Email = mockedDBUser.Email;
+            mockedUser.ProviderUserName = mockedDBUser.ProviderUserName;
+
+            return mockedUser;
         }
 
         public async Task<bool> DeleteUserByIdAsync(string UserId)

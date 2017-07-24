@@ -35,21 +35,21 @@ namespace TestDocArcService
 
             var dbProvider = ProviderFactory.CreateDatabaseProvider();
 
-            Users testUser = new Users();
-            testUser.UserId = "123456789";
+            UserModel testUser = new UserModel();
             testUser.ProviderUserName = "7701";
             testUser.Email = "test@user.com";
-            testUser.Container = "123-456-789";
 
             await dbProvider.DeleteUserByIdAsync(testUser.UserId);
 
-            Assert.IsTrue(dbProvider.InsertUser(testUser));
+            var dbUser = dbProvider.AddUser(testUser);
 
-            Assert.IsTrue(dbProvider.GetUserById(testUser.UserId) != null);
+            Assert.IsTrue(dbUser.UserId != string.Empty);
 
-            Assert.IsTrue(dbProvider.GetUserByProviderUserName(testUser.ProviderUserName) != null);
+            Assert.IsTrue(dbProvider.GetUserById(dbUser.UserId) != null);
 
-            Assert.IsTrue(dbProvider.DeleteUserByIdAsync(testUser.UserId).Result);
+            Assert.IsTrue(dbProvider.GetUserByProviderUserName(dbUser.ProviderUserName) != null);
+
+            Assert.IsTrue(dbProvider.DeleteUserByIdAsync(dbUser.UserId).Result);
         }
 
         [TestMethod]
@@ -59,24 +59,26 @@ namespace TestDocArcService
 
             var dbProvider = ProviderFactory.CreateDatabaseProvider();
 
-            Users testUser = new Users();
-            testUser.UserId = "123456789";
+            UserModel testUser = new UserModel();
             testUser.ProviderUserName = "7701";
             testUser.Email = "testUserReadWrite@user.com";
-            testUser.Container = Guid.NewGuid().ToString();
 
-            await dbProvider.DeleteAllFilesFromUserAsync(testUser.UserId);
+            var dbUser = dbProvider.GetUserByProviderUserName(testUser.ProviderUserName);
+
+            await dbProvider.DeleteAllFilesFromUserAsync(dbUser.UserId);
             await dbProvider.DeleteUserByProviderNameAsync(testUser.ProviderUserName);
 
-            Assert.IsTrue(dbProvider.InsertUser(testUser));
+            dbUser = dbProvider.AddUser(testUser);
 
-            Assert.IsTrue(dbProvider.GetUserById(testUser.UserId) != null);
+            Assert.IsTrue(dbUser.UserId != string.Empty);
 
-            Assert.IsTrue(dbProvider.GetUserByProviderUserName(testUser.ProviderUserName) != null);
+            Assert.IsTrue(dbProvider.GetUserById(dbUser.UserId) != null);
 
-            Assert.IsTrue(dbProvider.GetContainerId(testUser.ProviderUserName) == testUser.Container);
+            Assert.IsTrue(dbProvider.GetUserByProviderUserName(dbUser.ProviderUserName) != null);
 
-            Assert.IsTrue(await dbProvider.DeleteUserByIdAsync(testUser.UserId));
+            Assert.IsTrue(dbProvider.GetContainerId(dbUser.ProviderUserName) == dbUser.Container);
+
+            Assert.IsTrue(await dbProvider.DeleteUserByIdAsync(dbUser.UserId));
         }
 
         [TestMethod]
@@ -112,21 +114,23 @@ namespace TestDocArcService
 
             var dbProvider = ProviderFactory.CreateDatabaseProvider();
 
-            Users testUser = new Users();
-            testUser.UserId = "111222333";
+            UserModel testUser = new UserModel();
             testUser.ProviderUserName = "9999";
             testUser.Email = "9999@user.com";
-            testUser.Container = Guid.NewGuid().ToString();
 
-            await dbProvider.DeleteFilesAsync(dbProvider.GetFilesByUserId(testUser.UserId));
+            var dbUser = dbProvider.GetUserByProviderUserName(testUser.ProviderUserName);
+
+            await dbProvider.DeleteAllFilesFromUserAsync(dbUser.UserId);
             await dbProvider.DeleteUserByProviderNameAsync(testUser.ProviderUserName);
 
-            Assert.IsTrue(dbProvider.InsertUser(testUser));
+            dbUser = dbProvider.AddUser(testUser);
+
+            Assert.IsTrue(dbUser.UserId != string.Empty);
 
             Files testFile = new Files();
-            testFile.UserId = testUser.UserId;
+            testFile.UserId = dbUser.UserId;
             testFile.FileId = "987654321";
-            testFile.Container = testUser.Container;
+            testFile.Container = dbUser.Container;
             testFile.OriginalFileName = "Testdatei";
             testFile.OriginalFileType = "JPG";
             testFile.FileSizeInKB = 100;

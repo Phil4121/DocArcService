@@ -234,20 +234,26 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractClasses\FileProcessingProvider.cs" />
     <Compile Include="AbstractClasses\NoSqlDatabaseProvider.cs" />
     <Compile Include="AbstractClasses\SqlDatabaseProvider.cs" />
     <Compile Include="AbstractClasses\StorageUploadProvider.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CognitiveController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helper\CognitiveServicesHelper.cs" />
     <Compile Include="Helper\DocumentDBHelper.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Interfaces\IBlobStorageUploadProvider.cs" />
+    <Compile Include="Interfaces\ICognitiveService.cs" />
     <Compile Include="Interfaces\IDatabaseProvider.cs" />
+    <Compile Include="Interfaces\IFileProcessingProvider.cs" />
     <Compile Include="Interfaces\INoSqlDatabase.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="MockedProvider\MockedBlobStorageUploadProvider.cs" />
+    <Compile Include="MockedProvider\MockedCognitiveServiceProvider.cs" />
     <Compile Include="MockedProvider\MockedDatabaseProvider.cs" />
     <Compile Include="MockedProvider\MockedDocumentDBProvider.cs" />
     <Compile Include="Models\DocumentModel.cs" />
@@ -269,10 +275,12 @@
     <Compile Include="Models\Files.cs">
       <DependentUpon>DorArcDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\Users.cs">
       <DependentUpon>DorArcDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Provider\AzureDatabaseProvider.cs" />
+    <Compile Include="Provider\CognitiveServiceProvider.cs" />
     <Compile Include="Provider\DocumentDBProvider.cs" />
     <Compile Include="Provider\ProviderFactory.cs" />
     <Compile Include="Services\BlobService.cs" />

@@ -29,6 +29,7 @@ namespace DocArcService.MockedProvider
 
                 var blobUpload = new BlobUploadModel
                 {
+                    Container = "MockedContainer",
                     FileName = fileName,
                     FileSizeInBytes = rnd.Next(int.MinValue, int.MaxValue)
                 };

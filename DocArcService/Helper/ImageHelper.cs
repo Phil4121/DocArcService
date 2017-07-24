@@ -1,68 +1,51 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Auth.Protocol;
+using Microsoft.WindowsAzure.Storage.Core.Auth;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
 namespace DocArcService.Helper
 {
-    public class ImageHelper : IDisposable
+    public class ImageHelper
     {
         public enum Format { No_Change, A4 };
 
-        public string Resize(string imageFilePath, Format format)
+        public Image Resize(Image image, Format format)
         {
             try
             {
-                var tmpFilePath = imageFilePath + ".tmp";
+                var newWidth = 0;
+                var newHeight = 0;
 
-                using (var srcImage = Image.FromFile(imageFilePath))
+                if (format == Format.A4)
                 {
-                    var newWidth = 0;
-                    var newHeight = 0;
-
-                    if (format == Format.A4)
-                    {
-                        newWidth = 786;
-                        newHeight = 1024;
-                    }
-
-                    using (var newImage = new Bitmap(newWidth, newHeight))
-                    using (var graphics = Graphics.FromImage(newImage))
-                    {
-                        graphics.DrawImage(srcImage, new Rectangle(0, 0, newWidth, newHeight));
-
-                        newImage.Save(tmpFilePath,ImageFormat.Jpeg);
-                        newImage.Dispose();
-                    }
+                    newWidth = 786;
+                    newHeight = 1024;
                 }
 
+                var newImage = new Bitmap(newWidth, newHeight);
 
-                if (System.IO.File.Exists(tmpFilePath))
+                using (var graphics = Graphics.FromImage(newImage))
                 {
-                    System.IO.File.Delete(imageFilePath);
-                    System.IO.File.Move(tmpFilePath, imageFilePath);
-                    System.IO.File.Delete(tmpFilePath);
-                }
-                else
-                {
-                    throw new Exception("TMP File not exists!");
+                    graphics.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight));
                 }
 
-                return imageFilePath;
+                return newImage;
+
             }
             catch (Exception ex)
             {
-                return "";
+                Console.WriteLine(ex.Message);
+                return null;
             }
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

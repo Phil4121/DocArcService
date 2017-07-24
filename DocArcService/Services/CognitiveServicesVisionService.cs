@@ -1,5 +1,8 @@
 ﻿using DocArcService.Helper;
+using DocArcService.Interfaces;
+using DocArcService.Provider;
 using Microsoft.ProjectOxford.Vision.Contract;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,37 +12,22 @@ using System.Web;
 
 namespace DocArcService.Services
 {
-    public class CognitiveServicesVisionService
+    public class CognitiveServicesVisionService : ICognitiveService
     {
-        private string _SubscriptionKey = string.Empty;
-
-        private string SubstcriptionKey
+        public async Task<bool> ProzessImageAsync(string blobFileName, string container)
         {
-            get
+            try
             {
-                if (String.IsNullOrEmpty(_SubscriptionKey))
-                    _SubscriptionKey = GetSubscriptionKey();
+                var fileProcessingProvider = ProviderFactory.CreateFileProcessingProvider();
 
-                return _SubscriptionKey;
+                return await fileProcessingProvider.ProzessImage(blobFileName, container);
             }
-        }
-
-
-        public async Task<OcrResults> ConvertImageToTextAsync(string ImageFilePath)
-        {
-            var cognitiveService = new ImageToTextInterpreter
+            catch (Exception ex)
             {
-                ImageFilePath = ImageFilePath,
-                SubscriptionKey = this.SubstcriptionKey,
-                ImageFormat = ImageHelper.Format.A4
-            };
+                Console.WriteLine(ex.Message);
 
-            return await cognitiveService.ConvertImageToStreamAndExtractText();
-        }
-
-        private string GetSubscriptionKey()
-        {
-            return ConfigurationManager.AppSettings["DocArcVisionKey"].ToString();
+                return false;
+            }
         }
     }
 }

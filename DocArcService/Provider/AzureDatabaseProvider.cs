@@ -19,12 +19,12 @@ namespace DocArcService.Provider
 
         public override async Task<bool> DeleteUserByIdAsync(string UserId)
         {
-            return await DeleteUser(GetUserById(UserId));
+            return await DeleteUser(GetDbUserById(UserId));
         }
 
         public override async Task<bool> DeleteUserByProviderNameAsync(string ProviderUserName)
         {
-            return await DeleteUser(GetUserByProviderUserName(ProviderUserName));
+            return await DeleteUser(GetDbUserByProviderUserName(ProviderUserName));
         }
 
         private async Task<bool> DeleteUser(Users user)
@@ -39,8 +39,9 @@ namespace DocArcService.Provider
                 return true;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -57,31 +58,120 @@ namespace DocArcService.Provider
 
         }
 
-        public override Users GetUserByProviderUserName(string ProviderUserName)
-        {
-
-            return Ent.Users.Where(x => x.ProviderUserName == ProviderUserName).FirstOrDefault();
-
-        }
-
-        public override Users GetUserById(string UserId)
-        {
-            return Ent.Users.Where(x => x.UserId == UserId).FirstOrDefault();
-        }
-
-        public override bool InsertUser(Users User)
+        public override UserModel GetUserByProviderUserName(string ProviderUserName)
         {
             try
             {
-                Ent.Users.Add(User);
+                if (ProviderUserName == string.Empty)
+                    throw new Exception("No ProviderUserName submitted");
+
+                var dbUser = Ent.Users.Where(x => x.ProviderUserName == ProviderUserName).FirstOrDefault();
+
+                if (dbUser == null)
+                    return new UserModel();
+
+                return MapUserToUserModel(dbUser);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new UserModel();
+            }
+        }
+
+        public override UserModel GetUserById(string UserId)
+        {
+            try
+            {
+                if (UserId == string.Empty)
+                    throw new Exception("No UserId submitted");
+
+                var dbUser = Ent.Users.Where(x => x.UserId == UserId).FirstOrDefault();
+
+                if (dbUser == null)
+                    return new UserModel();
+
+                return MapUserToUserModel(dbUser);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new UserModel();
+            }
+        }
+
+        private Users GetDbUserById(string UserId)
+        {
+            try
+            {
+                if (UserId == string.Empty)
+                    throw new Exception("No UserId submitted");
+
+                return Ent.Users.Where(x => x.UserId == UserId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new Users();
+            }
+        }
+
+        private Users GetDbUserByProviderUserName(string ProviderUserName)
+        {
+            try
+            {
+                if (ProviderUserName == string.Empty)
+                    throw new Exception("No ProviderUserName submitted");
+
+                return Ent.Users.Where(x => x.ProviderUserName == ProviderUserName).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new UserModel();
+            }
+        }
+
+        private UserModel MapUserToUserModel(Users user)
+        {
+            var userModel = new UserModel(user.UserId, user.Container);
+            userModel.ProviderUserName = user.ProviderUserName;
+            userModel.Email = user.Email;
+            userModel.Files = user.Files;
+
+            return userModel;
+        }
+
+
+        public override UserModel AddUser(UserModel User)
+        {
+            try
+            {
+                if (UserExists(User.ProviderUserName))
+                    return GetUserByProviderUserName(User.ProviderUserName);
+
+
+                var dbUser = new Users();
+                dbUser.UserId = Guid.NewGuid().ToString();
+                dbUser.Container = Guid.NewGuid().ToString();
+                dbUser.Email = User.Email;
+                dbUser.ProviderUserName = User.ProviderUserName;
+
+                Ent.Users.Add(dbUser);
                 Ent.SaveChanges();
 
-                return true;
+                return MapUserToUserModel(dbUser);
             }
             catch (Exception)
             {
-                return false;
+                return new UserModel();
             }
+        }
+
+        private bool UserExists(string ProviderUserName)
+        {
+            var user = GetUserByProviderUserName(ProviderUserName);
+            return user != null && user.UserId != string.Empty;
         }
 
         #endregion
@@ -99,8 +189,9 @@ namespace DocArcService.Provider
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -118,8 +209,9 @@ namespace DocArcService.Provider
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -162,18 +254,51 @@ namespace DocArcService.Provider
 
         public override async Task<bool> DeleteAllFilesFromUserAsync(string UserId)
         {
-            var files = GetFilesByUserId(UserId);
-            return await DeleteFilesAsync(files);
+            try
+            {
+                if (UserId == string.Empty)
+                    throw new Exception("No UserId submitted");
+
+                var files = GetFilesByUserId(UserId);
+                return await DeleteFilesAsync(files);
+
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public override List<Files> GetFilesByUserId(string UserId)
         {
-            return Ent.Files.Where(x => x.UserId == UserId).ToList();
+            try
+            {
+                if (UserId == string.Empty)
+                    throw new Exception("No UserId submitted");
+
+                return Ent.Files.Where(x => x.UserId == UserId).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<Files>();
+            }
         }
 
         public override List<Files> GetFilesByContainerId(string ContainerId)
         {
-            return Ent.Files.Where(x => x.Container == ContainerId).ToList<Files>();
+            try
+            {
+                if (ContainerId == string.Empty)
+                    throw new Exception("No ContainerId submitted");
+
+                return Ent.Files.Where(x => x.Container == ContainerId).ToList<Files>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<Files>();
+            }
         }
 
         #endregion

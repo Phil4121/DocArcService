@@ -34,5 +34,12 @@ namespace DocArcService.Provider
                 ? new MockedDocumentDBProvider() as INoSqlDatabase
                 : new DocumentDBProvider();
         }
+
+        public static IFileProcessingProvider CreateFileProcessingProvider()
+        {
+            return IsMocked
+                ? new MockedDocumentDBProvider() as IFileProcessingProvider
+                : new CognitiveServiceProvider();
+        }
     }
 }

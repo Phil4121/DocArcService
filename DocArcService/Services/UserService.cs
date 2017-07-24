@@ -16,13 +16,13 @@ namespace DocArcService.Services
         {
             var userProvider = ProviderFactory.CreateDatabaseProvider();
 
-            bool success = await httpContent.ReadAsAsync(typeof(Users))
+            bool success = await httpContent.ReadAsAsync(typeof(UserModel))
                 .ContinueWith(task =>
                 {
                     if (task.IsFaulted || task.IsCanceled)
                         throw task.Exception;
 
-                    userProvider.InsertUser((Users)task.Result);
+                    userProvider.AddUser((UserModel)task.Result);
                     return true;
                 }
                 );

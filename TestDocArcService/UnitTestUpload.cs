@@ -79,17 +79,19 @@ namespace TestDocArcService
                 }
                 dbProvider.AddUser(testUser);
 
+                testUser = dbProvider.GetUserByProviderUserName(controller.User.Identity.Name);
+
                 var message = new HttpRequestMessage();
                 var content = new MultipartFormDataContent();
 
-                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "Test.txt");
+                var filePath = Path.Combine(Environment.CurrentDirectory, @"Testfiles\", "ocr.jpg");
 
                 fileStream = new FileStream(filePath, FileMode.Open);
 
                 var sc = new StreamContent(fileStream);
                 sc.Headers.Add("Content-Type", "image/jpeg");
 
-                content.Add(sc, "file", "Testfile");
+                content.Add(sc, "file", "Testfile" + Guid.NewGuid() + ".jpg");
 
                 message.Method = HttpMethod.Post;
                 message.Content = content;

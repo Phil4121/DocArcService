@@ -15,7 +15,7 @@ namespace TestDocArcService
         [TestMethod]
         public async Task TestDownload()
         {
-            var fileName = "Testfile28b9d60a-2c58-4235-947c-5ee5458c0bbc.jpg";
+            var fileName = "Testfilec79c8947-d193-43ca-9747-daa1cec8e819.jpg";
             var container = "7aa14637-7910-4a8c-a33a-48f10b330875";
 
             var downloadFolder = @"C:\Users\Phil-PC\Documents\Visual Studio 2015\Projects\DocArcService\TestDocArcService\bin\Debug\Testfiles";

@@ -21,17 +21,18 @@ namespace DocArcService.Helper
     {
         public async Task<string> GetBlobFromAzureStorage(string fileName, string container, string downloadFolder)
         {
+            var blobService = new BlobService();
+
+            var blobDownload = await blobService.DownloadBlob(fileName, container);
+
+            var downloadPath = FormatDownloadFolder(downloadFolder) + blobDownload.BlobFileName;
+
+            FileStream file = new FileStream(downloadPath, FileMode.Create, FileAccess.Write);
+
             try
             {
-                var blobService = new BlobService();
-
-                var blobDownload = await blobService.DownloadBlob(fileName, container);
-
                 using (var ms = blobDownload.BlobStream)
                 {
-                    var downloadPath = FormatDownloadFolder(downloadFolder) + blobDownload.BlobFileName;
-
-                    FileStream file = new FileStream(downloadPath, FileMode.Create, FileAccess.Write);
                     ms.WriteTo(file);
                     file.Close();
                     ms.Close();
@@ -43,6 +44,10 @@ namespace DocArcService.Helper
             {
                 Console.WriteLine(ex.Message);
                 throw ex;
+            }
+            finally
+            {
+                file.Dispose();
             }
         }
 

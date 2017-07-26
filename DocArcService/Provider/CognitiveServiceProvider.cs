@@ -38,6 +38,8 @@ namespace DocArcService.Provider
             try
             {
                 var fileHelper = new FileHelper();
+                var pdfHelper = new PDFHelper();
+                var imageHelper = new ImageHelper();
 
                 // 1. check if exists 
                 if (! await fileHelper.BlobExists(blobFileName,container))
@@ -46,11 +48,24 @@ namespace DocArcService.Provider
                 // 2. download to filesystem
                 var tmpFileLocation = await fileHelper.GetBlobFromAzureStorage(blobFileName, container, AppDomain.CurrentDomain.BaseDirectory);
 
-                // 3. process
-                var ocr = await ConvertImageToTextAsync(tmpFileLocation);
-                Console.WriteLine(ocr.Language);
+                // 3. check if valid image file!
+                if (!imageHelper.IsValidImage(tmpFileLocation))
+                    return false;
 
-                // 4. upload and replace original
+                // idear: first pdf -> send pdf to ocr (better for futher use?)
+
+                // 4. process ocr
+                var ocr = await ConvertImageToTextAsync(tmpFileLocation);
+
+
+                // 5. save ocr
+                //throw new NotImplementedException();
+                //throw new Exception("rebuild for multiple images!!!!");
+
+                // 6. convert to pdf
+                tmpFileLocation = pdfHelper.SaveImageAsPdf(tmpFileLocation, tmpFileLocation);
+
+                // 7. upload and replace original
                 var uploadOK = await fileHelper.UploadBlobToAzureStorage(blobFileName, tmpFileLocation, container); 
 
                 return uploadOK;

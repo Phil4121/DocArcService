@@ -47,5 +47,18 @@ namespace DocArcService.Helper
                 return null;
             }
         }
+
+        public bool IsValidImage(string imagePath)
+        {
+            try
+            {
+                Image.FromFile(imagePath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

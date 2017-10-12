@@ -29,6 +29,8 @@ namespace DocArcService.Helper
         {
             try
             {
+                CheckRequiredFields();
+
                 var visionServiceClient = new VisionServiceClient(SubscriptionKey);
 
                 Image newImg = null;
@@ -86,6 +88,17 @@ namespace DocArcService.Helper
             }
 
             return stringBuilder.ToString();
+        }
+
+        private bool CheckRequiredFields()
+        {
+            if(string.IsNullOrEmpty(ImageFilePath))
+                throw new Exception("No ImageFilePath has been set");
+
+            if (string.IsNullOrEmpty(SubscriptionKey))
+                throw new Exception("No SubscriptionKey has been set");
+
+            return true;
         }
     }
 }

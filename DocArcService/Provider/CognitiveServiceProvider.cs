@@ -52,20 +52,21 @@ namespace DocArcService.Provider
                 if (!imageHelper.IsValidImage(tmpFileLocation))
                     return false;
 
-                // idear: first pdf -> send pdf to ocr (better for futher use?)
+                // ToDo: idear: first pdf -> send pdf to ocr (better for futher use?)
 
                 // 4. process ocr
                 var ocr = await ConvertImageToTextAsync(tmpFileLocation);
 
-
-                // 5. save ocr
+                // 5. upload ocr to search engine
+                await UploadOcrToSearchEngine(ocr);
+                // 6. save ocr in DB
                 //throw new NotImplementedException();
                 //throw new Exception("rebuild for multiple images!!!!");
 
-                // 6. convert to pdf
+                // 7. convert to pdf
                 tmpFileLocation = pdfHelper.SaveImageAsPdf(tmpFileLocation, tmpFileLocation);
 
-                // 7. upload and replace original
+                // 8. upload and replace original
                 var uploadOK = await fileHelper.UploadBlobToAzureStorage(blobFileName, tmpFileLocation, container); 
 
                 return uploadOK;
@@ -95,6 +96,11 @@ namespace DocArcService.Provider
             };
 
             return await cognitiveService.ConvertImageToStreamAndExtractText();
+        }
+
+        private async Task UploadOcrToSearchEngine(OcrResults ocr)
+        {
+            int i = 0;
         }
     }
 }

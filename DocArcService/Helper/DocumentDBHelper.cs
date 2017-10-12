@@ -10,9 +10,9 @@ using System.Web;
 
 namespace DocArcService.Helper
 {
-    public static class DocumentDBHelper
+    public class DocumentDBHelper
     {
-        public static async Task<bool> DatabaseExists(DocumentClient Client, string DatabaseId, bool CreateIfNotExists = false)
+        public async Task<bool> DatabaseExists(DocumentClient Client, string DatabaseId, bool CreateIfNotExists = false)
         {
             var db = Client.CreateDatabaseQuery()
                             .Where(d => d.Id == DatabaseId)
@@ -30,7 +30,7 @@ namespace DocArcService.Helper
             return db == null;
         }
 
-        public static async Task<bool> CollectionExists(DocumentClient Client, string DatabaseId, string CollectionId, bool CreateIfNotExists = false)
+        public async Task<bool> CollectionExists(DocumentClient Client, string DatabaseId, string CollectionId, bool CreateIfNotExists = false)
         {
             var db = Client.CreateDatabaseQuery()
                 .Where(d => d.Id == DatabaseId)
@@ -58,7 +58,7 @@ namespace DocArcService.Helper
             return false;
         }
 
-        public static async Task<bool> SaveDocument(DocumentClient Client, string DatabaseId, string CollectionId, string DocumentId, DocumentModel Document)
+        public async Task<bool> SaveDocument(DocumentClient Client, string DatabaseId, string CollectionId, string DocumentId, DocumentModel Document)
         {
             try
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.ProjectOxford.Vision.Contract;
+﻿using Microsoft.Azure.Search.Models;
+using Microsoft.ProjectOxford.Vision.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Web;
 
 namespace DocArcService.Models
 {
+    [SerializePropertyNamesAsCamelCase]
     public class DocumentModel
     {
         public string UserId { get; set; }

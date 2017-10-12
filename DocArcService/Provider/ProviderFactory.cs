@@ -41,5 +41,12 @@ namespace DocArcService.Provider
                 ? new MockedDocumentDBProvider() as IFileProcessingProvider
                 : new CognitiveServiceProvider();
         }
+
+        public static ISearchEngineProvider CreateSearchEngineProvider()
+        {
+            return IsMocked
+                ? new MockedSearchEngineProvider() as ISearchEngineProvider
+                : new AzureSearchEngineProvider();
+        }
     }
 }

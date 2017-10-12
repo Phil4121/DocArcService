@@ -40,11 +40,13 @@ namespace DocArcService.Provider
         {
             try
             {
-                await DocumentDBHelper.DatabaseExists(this.Client, base.DbName, true);
+                var docDBHelper = new DocumentDBHelper();
 
-                await DocumentDBHelper.CollectionExists(this.Client, base.DbName, Document.UserId, true);
+                await docDBHelper.DatabaseExists(this.Client, base.DbName, true);
 
-                await DocumentDBHelper.SaveDocument(this.Client, base.DbName, Document.UserId, Document.FileId, Document);
+                await docDBHelper.CollectionExists(this.Client, base.DbName, Document.UserId, true);
+
+                await docDBHelper.SaveDocument(this.Client, base.DbName, Document.UserId, Document.FileId, Document);
 
                 return true;
             }catch(Exception ex)

@@ -6,7 +6,7 @@ using System.Web;
 using Microsoft.ProjectOxford.Vision.Contract;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using DocArcService.Helper;
 
 namespace DocArcService.Provider
@@ -49,7 +49,7 @@ namespace DocArcService.Provider
                 await docDBHelper.SaveDocument(this.Client, base.DbName, Document.UserId, Document.FileId, Document);
 
                 return true;
-            }catch(Exception ex)
+            }catch(Exception)
             {
                 return false;
             }

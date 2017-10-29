@@ -1,5 +1,5 @@
 ﻿using DocArcService.Helper;
-using DocArcService.Interfaces;
+using DocArcSharedLibrary.Interfaces;
 using DocArcService.Provider;
 using Microsoft.ProjectOxford.Vision.Contract;
 using Microsoft.WindowsAzure.Storage.Blob;

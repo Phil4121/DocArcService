@@ -1,6 +1,6 @@
 ﻿using DocArcService.Classes;
 using DocArcService.Controllers;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Auth.Protocol;
 using Microsoft.WindowsAzure.Storage.Blob;

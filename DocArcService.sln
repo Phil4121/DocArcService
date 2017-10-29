@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocArcService", "DocArcServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDocArcService", "TestDocArcService\TestDocArcService.csproj", "{837074BC-C235-43CF-BA35-3792E3C885AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocArcQueues", "DocArcQueues\DocArcQueues.csproj", "{FB99BAF4-BE6E-43F2-B903-50F0049AC496}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocArcSharedLibrary", "DocArcSharedLibrary\DocArcSharedLibrary.csproj", "{75944C8B-5EA8-47B8-B83A-4234A147FC2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{837074BC-C235-43CF-BA35-3792E3C885AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{837074BC-C235-43CF-BA35-3792E3C885AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{837074BC-C235-43CF-BA35-3792E3C885AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB99BAF4-BE6E-43F2-B903-50F0049AC496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB99BAF4-BE6E-43F2-B903-50F0049AC496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB99BAF4-BE6E-43F2-B903-50F0049AC496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB99BAF4-BE6E-43F2-B903-50F0049AC496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75944C8B-5EA8-47B8-B83A-4234A147FC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75944C8B-5EA8-47B8-B83A-4234A147FC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75944C8B-5EA8-47B8-B83A-4234A147FC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75944C8B-5EA8-47B8-B83A-4234A147FC2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

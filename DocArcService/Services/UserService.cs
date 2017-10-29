@@ -1,5 +1,5 @@
-﻿using DocArcService.Interfaces;
-using DocArcService.Models;
+﻿using DocArcSharedLibrary.Interfaces;
+using DocArcSharedLibrary.Models;
 using DocArcService.Provider;
 using System;
 using System.Collections.Generic;

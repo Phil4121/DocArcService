@@ -1,4 +1,4 @@
-﻿using DocArcService.Models;
+﻿using DocArcSharedLibrary.Models;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using System;
@@ -59,9 +59,9 @@ namespace DocArcService.Helper
         }
 
 
-        public List<Models.SearchResultModel> SearchDocuments(SearchIndexClient indexClient, string searchText)
+        public List<DocArcSharedLibrary.Models.SearchResultModel> SearchDocuments(SearchIndexClient indexClient, string searchText)
         {
-            var searchResults = new List<Models.SearchResultModel>();
+            var searchResults = new List<DocArcSharedLibrary.Models.SearchResultModel>();
             try
             {
                 var sp = new SearchParameters();
@@ -72,7 +72,7 @@ namespace DocArcService.Helper
                 {
                     //var document = (AzureSearchResult) result.Document;
 
-                    searchResults.Add(new Models.SearchResultModel(result.Document["FileId"].ToString(), result.Document["UserId"].ToString(), result.Document["Ocr"].ToString()));
+                    searchResults.Add(new DocArcSharedLibrary.Models.SearchResultModel(result.Document["FileId"].ToString(), result.Document["UserId"].ToString(), result.Document["Ocr"].ToString()));
 
                     //Console.WriteLine("File ID: {0}", result.Document.FileId);
                     //Console.WriteLine("User ID: {0}", result.Document.UserId);

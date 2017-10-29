@@ -1,9 +1,6 @@
-﻿using DocArcService.Interfaces;
+﻿using DocArcSharedLibrary.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using System.Threading.Tasks;
 using DocArcService.Helper;
 using Microsoft.Azure.Search;
@@ -94,7 +91,7 @@ namespace DocArcService.Provider
 
                 return Task.FromResult(true);
 
-            }catch(Exception ex)
+            }catch(Exception)
             {
                 return Task.FromResult(false);
             }

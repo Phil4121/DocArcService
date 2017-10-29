@@ -1,14 +1,10 @@
 ﻿using DocArcService.Controllers;
-using DocArcService.Models;
 using DocArcService.Provider;
+using DocArcSharedLibrary.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 

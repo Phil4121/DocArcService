@@ -1,4 +1,4 @@
-﻿using DocArcService.Models;
+﻿using DocArcSharedLibrary.Models;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using System;

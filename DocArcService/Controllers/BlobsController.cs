@@ -1,6 +1,6 @@
 ﻿using DocArcService.Classes;
-using DocArcService.Interfaces;
-using DocArcService.Models;
+using DocArcSharedLibrary.Interfaces;
+using DocArcSharedLibrary.Models;
 using DocArcService.Provider;
 using DocArcService.Services;
 using System;

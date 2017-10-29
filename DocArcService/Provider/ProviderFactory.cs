@@ -1,12 +1,14 @@
 ﻿using DocArcService.AbstractClasses;
-using DocArcService.Interfaces;
+using DocArcSharedLibrary.Interfaces;
 using DocArcService.MockedProvider;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
+using DocArcSharedLibrary.MockedProvider;
+using DocArcSharedLibrary.Provider;
 
 namespace DocArcService.Provider
 {

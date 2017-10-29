@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Azure.Search;
 using DocArcService.Helper;
 using System.Configuration;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using Microsoft.ProjectOxford.Vision.Contract;
 using System.Threading;
 using DocArcService.Provider;

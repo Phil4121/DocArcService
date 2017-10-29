@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DocArcService.Provider;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using System.Threading.Tasks;
 
 namespace TestDocArcService

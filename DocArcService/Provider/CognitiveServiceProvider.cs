@@ -100,7 +100,7 @@ namespace DocArcService.Provider
 
         private async Task UploadOcrToSearchEngine(OcrResults ocr)
         {
-            int i = 0;
+            int i = await Task.FromResult(0);
         }
     }
 }

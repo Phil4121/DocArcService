@@ -1,4 +1,4 @@
-﻿using DocArcService.Interfaces;
+﻿using DocArcSharedLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

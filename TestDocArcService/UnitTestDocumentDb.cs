@@ -1,4 +1,4 @@
-﻿using DocArcService.Models;
+﻿using DocArcSharedLibrary.Models;
 using DocArcService.Provider;
 using Microsoft.ProjectOxford.Vision.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

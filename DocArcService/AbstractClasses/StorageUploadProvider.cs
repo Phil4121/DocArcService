@@ -1,10 +1,10 @@
-﻿using DocArcService.Interfaces;
+﻿using DocArcSharedLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using System.IO;
 
 namespace DocArcService.AbstractClasses

@@ -10,7 +10,7 @@ using DocArcService.Provider;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Collections.Generic;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 using System.Security.Principal;
 using System.Threading;
 

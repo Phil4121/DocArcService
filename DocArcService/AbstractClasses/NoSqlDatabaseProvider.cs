@@ -1,4 +1,4 @@
-﻿using DocArcService.Interfaces;
+﻿using DocArcSharedLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using Microsoft.ProjectOxford.Vision.Contract;
 using System.Threading.Tasks;
 using System.Configuration;
 using DocArcService.Helper;
-using DocArcService.Models;
+using DocArcSharedLibrary.Models;
 
 namespace DocArcService.AbstractClasses
 {
